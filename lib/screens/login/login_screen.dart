@@ -15,6 +15,9 @@ class _LoginScreenState extends State<LoginScreen> {
       children: <Widget>[
         Text(
           'Email',
+          style: TextStyle(
+            color: Color(0xFFFFFFFF)
+          ),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -34,6 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.white,
               ),
               hintText: 'Enter your Email',
+              hintStyle: TextStyle(
+                color: Color(0xFFFFFFFF)
+              )
             ),
           ),
         ),
@@ -47,6 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
       children: <Widget>[
         Text(
           'Password',
+          style: TextStyle(
+            color: Color(0xFFFFFFFF)
+          ),
         ),
         SizedBox(height: 10.0),
         Container(
@@ -66,6 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.white,
               ),
               hintText: 'Enter your Password',
+              hintStyle: TextStyle(
+                color: Color(0xFFFFFFFF)
+              )
             ),
           ),
         ),
@@ -81,6 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Forgot Password?',
+          style: TextStyle(
+            color: Color(0xFFFFFFFF)
+          ),
         ),
       ),
     );
@@ -106,6 +121,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Text(
             'Remember me',
+            style: TextStyle(
+            color: Color(0xFFFFFFFF)
+          ),
           ),
         ],
       ),
@@ -127,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Text(
           'LOGIN',
           style: TextStyle(
-            color: Color(0xFF527DAA),
+            color: Color(0xFF3040a3),
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -151,56 +169,59 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(height: 20.0),
         Text(
           'Sign in with',
+          style: TextStyle(
+            color: Color(0xFFFFFFFF)
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          )
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-            () => print('Login with Facebook'),
-            AssetImage(
-              'assets/logos/facebook.png',
-            ),
-          ),
-          _buildSocialBtn(
-            () => print('Login with Google'),
-            AssetImage(
-              'assets/logos/google.png',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  //Widget _buildSocialBtn(Function onTap, AssetImage logo) {
+  //  return GestureDetector(
+  //    child: Container(
+  //      height: 60.0,
+  //      width: 60.0,
+  //      decoration: BoxDecoration(
+  //        shape: BoxShape.circle,
+  //        color: Colors.white,
+  //        boxShadow: [
+  //          BoxShadow(
+  //            color: Colors.black26,
+  //            offset: Offset(0, 2),
+  //            blurRadius: 6.0,
+  //          ),
+  //        ],
+  //        image: DecorationImage(
+  //          image: logo,
+  //        )
+  //      ),
+  //    ),
+  //  );
+  //}
+//
+  //Widget _buildSocialBtnRow() {
+  //  return Padding(
+  //    padding: EdgeInsets.symmetric(vertical: 30.0),
+  //    child: Row(
+  //      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //      children: <Widget>[
+  //        _buildSocialBtn(
+  //          () => print('Login with Facebook'),
+  //          AssetImage(
+  //            'assets/logos/facebook.png',
+  //          ),
+  //        ),
+  //        _buildSocialBtn(
+  //          () => print('Login with Google'),
+  //          AssetImage(
+  //            'assets/logos/google.png',
+  //          ),
+  //        ),
+  //      ],
+  //    ),
+  //  );
+  //}
 
   Widget _buildSignupBtn() {
     return GestureDetector(
@@ -244,15 +265,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
                     colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
+                      Color(0xFF3040a3),
+                      Color(0xFF5969c9)
                     ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
                   ),
                 ),
               ),
@@ -286,7 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       _buildRememberMeCheckbox(),
                       _buildLoginBtn(),
                       _buildSignInWithText(),
-                      _buildSocialBtnRow(),
+                      //_buildSocialBtnRow(),
                       _buildSignupBtn(),
                     ],
                   ),
