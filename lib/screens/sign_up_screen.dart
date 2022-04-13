@@ -1,22 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rac/screens/sign_up_screen.dart';
 import 'package:rac/utilities/constants.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rac/screens/login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   bool _rememberMe = false;
 
@@ -92,22 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () => print('Forgot Password Button Pressed'),
-        child: const Text(
-          'Forgot Password?',
-          style: kLabelStyle,
-        ),
-      ),
-    );
-  }
-
   Widget _buildRememberMeCheckbox() {
     return SizedBox(
-      height: 20.0,
+      height: 80.0,
       child: Row(
         children: <Widget>[
           Theme(
@@ -132,21 +116,21 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildSignUpBtn() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         //deprecated comand!
         elevation: 5.0,
-        onPressed: () => signInWithGoogle(), //signInEmailPassword(),
+        onPressed: () => {},
         padding: const EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
         color: Colors.white,
         child: const Text(
-          'LOGIN',
+          'Cadastrar',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
@@ -171,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         SizedBox(height: 20.0),
         Text(
-          'Sign in with',
+          'Sign up with',
           style: kLabelStyle,
         ),
       ],
@@ -214,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           _buildSocialBtn(
-            () => signInWithGoogle(), // signInWithGoogle
+            () => print('Login with Google'), // signInWithGoogle
             const AssetImage(
               'assets/logos/google.jpg',
             ),
@@ -224,42 +208,23 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SignUpScreen()),
-        );
-      },
-      child: RichText(
-        text: const TextSpan(
-          children: [
-            TextSpan(
-              text: 'Don\'t have an Account? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'Sign Up',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF6CA8F1),
+        actions: <Widget>[
+          FlatButton(
+              child: const Text('Sign In',
+                  style: TextStyle(fontSize: 17.0, color: Colors.white)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              })
+        ],
+      ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
@@ -289,13 +254,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 40.0,
-                    vertical: 120.0,
+                    vertical: 60.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const Text(
-                        'Sign In',
+                        'Sign Up',
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'OpenSans',
@@ -309,12 +274,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 30.0,
                       ),
                       _buildPasswordTF(),
-                      _buildForgotPasswordBtn(),
                       _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
+                      _buildSignUpBtn(),
                       _buildSignInWithText(),
                       _buildSocialBtnRow(),
-                      _buildSignupBtn(),
                     ],
                   ),
                 ),
@@ -324,46 +287,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  Future signInEmailPassword() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              content: Text('Logado com sucesso!'),
-            );
-          });
-    } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              content: Text("Email ou senha invalidos!"),
-            );
-          });
-    }
-  }
-
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }
