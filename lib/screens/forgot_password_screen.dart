@@ -1,20 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rac/screens/login_screen.dart';
 import 'package:rac/utilities/constants.dart';
+import 'package:rac/screens/login_screen.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
 
   Widget _buildEmailTF() {
     return Column(
@@ -29,13 +28,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 55.0,
-          child: const TextField(
+          child: TextField(
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
@@ -51,43 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildPasswordTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const Text(
-          'Senha',
-          style: kLabelStyle,
-        ),
-        const SizedBox(height: 10.0),
-        Container(
-          margin: const EdgeInsets.only(bottom: 50.0),
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 52.0,
-          child: const TextField(
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
-              ),
-              hintText: 'Digite sua senha',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSignUpBtn() {
+  Widget _buildForgotPasswordBtn() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -98,17 +62,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
           SocialLoginButton(
             borderRadius: 30,
             backgroundColor: Colors.white,
-            text: "CADASTRAR",
+            text: "ENVIAR EMAIL DE RECUPERAÇÃO DE SENHA",
             textColor: const Color(0xFF3040a3),
             buttonType: SocialLoginButtonType.generalLogin,
-            onPressed: () => signInEmailPassword(),
+            onPressed: () => resetPassword(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildGoBackBtn() {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -120,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         text: const TextSpan(
           children: [
             TextSpan(
-              text: 'Já possui uma conta? ',
+              text: 'Lembrou sua senha? ',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18.0,
@@ -128,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
             TextSpan(
-              text: 'Login',
+              text: 'Voltar',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18.0,
@@ -187,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0)),
                       const Text(
-                        '______________  Sign Up  ______________',
+                        '_______  Recuperação de Senha  _______',
                         style: TextStyle(
                           color: Color(0xffffffff),
                           fontFamily: 'OpenSans',
@@ -197,12 +161,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 10.0),
                       _buildEmailTF(),
+                      _buildForgotPasswordBtn(),
                       const SizedBox(
                         height: 30.0,
                       ),
-                      _buildPasswordTF(),
-                      _buildSignUpBtn(),
-                      _buildLoginBtn(),
+                      _buildGoBackBtn(),
                     ],
                   ),
                 ),
@@ -214,26 +177,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Future signInEmailPassword() async {
+  Future resetPassword() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              content: Text('Bem vindo!'),
-            );
-          });
-    } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              content: Text("Email ou senha invalidos!"),
-            );
-          });
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Email enviado! Verifique a caixa de Spam."),
+        duration: Duration(seconds: 2),
+        backgroundColor: Color.fromARGB(255, 58, 150, 16),
+      ));
+    } on FirebaseAuthException {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            "Esse email não está cadastrado! Cadastre-se ou tente novamente!"),
+        duration: Duration(seconds: 2),
+        backgroundColor: Color.fromARGB(255, 187, 24, 12),
+      ));
     }
   }
 }

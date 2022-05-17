@@ -38,10 +38,13 @@ dependencies:
   firebase_auth: ^3.3.12
   google_sign_in: ^5.3.0
   flutter_login_facebook: ^1.4.1
+  social_login_buttons: ^1.0.6+2
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -49,6 +52,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_ios: "assets/icon/icon.png"
+  image_path_android: "assets/icon/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -68,6 +77,8 @@ flutter:
   assets:   
     - assets/logos/facebook.jpg
     - assets/logos/google.jpg
+    - assets/logos/logo.png
+    - assets/animacao/logoanim.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

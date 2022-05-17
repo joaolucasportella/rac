@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rac/services/google_auth.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,15 +14,19 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Home"),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: const Text('Logout',
                 style: TextStyle(fontSize: 17.0, color: Colors.white)),
-            onPressed: () => FirebaseAuth.instance.signOut(),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              //final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+              //provider.googleLogOut();
+            },
           )
         ],
       ),
       body: const Center(
-          child: Text('bora mine?', style: TextStyle(fontSize: 32.0))),
+          child: Text('Tela Principal', style: TextStyle(fontSize: 32.0))),
     );
   }
 }
