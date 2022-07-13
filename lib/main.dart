@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rac/screens/home_screen.dart';
+import 'package:rac/screens/scan_devices_screen.dart';
 import 'package:rac/screens/login_screen.dart';
 import 'package:rac/services/google_auth.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 void main() async {
   // Inicializa o Firebase e o Aplicativo
@@ -43,7 +44,7 @@ class MainPage extends StatelessWidget {
               return const Center(child: Text("Algo deu errado!"));
             } else if (snapshot.hasData) {
               // Verifica se o usuário já fez o login antes
-              return const HomeScreen();
+              return ScanDevicesScreen(title: 'Dispositivos disponíveis');
             } else {
               return const LoginScreen();
             }
