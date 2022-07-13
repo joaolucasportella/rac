@@ -1,0 +1,33 @@
+{
+    // Use o IntelliSense para saber mais sobre os atributos possíveis.
+    // Focalizar para exibir as descrições dos atributos existentes.
+    // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter (90ae90e9)",
+            "type": "dart",
+            "flutterMode": "debug",
+            "request": "launch",
+            "program": "lib/main.dart"
+        },
+
+        {
+            "name": "RAC",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "RAC (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "RAC (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
