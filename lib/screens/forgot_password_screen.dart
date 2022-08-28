@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rac/main.dart';
 import 'package:rac/utilities/constants.dart';
-import 'package:rac/screens/login_screen.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -77,7 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) => const MainPage()),
         );
       },
       child: RichText(
@@ -151,7 +151,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0)),
                       const Text(
-                        '_______  Recuperação de Senha  _______',
+                        'Recuperar de Senha',
                         style: TextStyle(
                           color: Color(0xffffffff),
                           fontFamily: 'OpenSans',
