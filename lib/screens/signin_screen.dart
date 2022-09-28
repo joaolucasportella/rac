@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:rac/screens/forgot_password_screen.dart';
 import 'package:rac/screens/signup_screen.dart';
-import 'package:rac/services/google_authentication.dart';
+import 'package:rac/services/authentication.dart';
 import 'package:rac/utilities/constants.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
-import 'package:rac/services/normal_authentication.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,36 +17,33 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Widget _buildEmailTF() {
+  Widget _buildEmailTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
+        Text(
           'Email',
-          style: kLabelStyle,
+          style: labelStyle,
         ),
         const SizedBox(height: 10.0),
         Container(
           margin: const EdgeInsets.only(bottom: 30.0),
           alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
+          decoration: boxDecorationStyle,
+          height: 60,
           child: TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: const InputDecoration(
+            style: textStyle,
+            decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
                 Icons.email,
                 color: Colors.white,
               ),
               hintText: 'Entre com o seu Email',
-              hintStyle: kHintTextStyle,
+              hintStyle: textStyle,
             ),
           ),
         ),
@@ -56,35 +51,32 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildPasswordTF() {
+  Widget _buildPasswordTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
-          'Password',
-          style: kLabelStyle,
+        Text(
+          'Senha',
+          style: labelStyle,
         ),
         const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
+          decoration: boxDecorationStyle,
           height: 60.0,
           child: TextField(
             controller: _passwordController,
             obscureText: true,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: const InputDecoration(
+            style: textStyle,
+            decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
               hintText: 'Entre com a sua Senha',
-              hintStyle: kHintTextStyle,
+              hintStyle: textStyle,
             ),
           ),
         ),
@@ -92,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildForgotPasswordBtn() {
+  Widget _buildForgotPasswordButton() {
     return Container(
       alignment: Alignment.centerRight,
       child: TextButton(
@@ -103,21 +95,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => const ForgotPasswordScreen()),
           );
         },
-        child: const Text(
+        child: Text(
           'Esqueceu a sua senha?',
-          style: kLabelStyle,
+          style: labelStyle,
         ),
       ),
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildLogInButton() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SocialLoginButton(
               borderRadius: 30,
@@ -126,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
               textColor: const Color(0xFF3040a3),
               buttonType: SocialLoginButtonType.generalLogin,
               onPressed: () {
-                Authentication().signIn(_emailController.text.trim(),
+                Authentication().signIn(context, _emailController.text.trim(),
                     _passwordController.text.trim());
               }),
         ],
@@ -136,44 +125,40 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildSignInWithText() {
     return Column(
-      children: const <Widget>[
+      children: <Widget>[
         Text(
-          '- OU -',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
-          ),
+          'OU',
+          style: textStyle,
         ),
-        SizedBox(height: 20.0),
+        const SizedBox(height: 20.0),
         Text(
-          'Entre com',
-          style: kLabelStyle,
+          'ENTRE COM',
+          style: textStyle,
         ),
       ],
     );
   }
 
-  Widget _buildLoginGoogleBtn() {
+  Widget _buildGoogleLogInButton() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SocialLoginButton(
             borderRadius: 30,
             text: "GOOGLE",
             textColor: const Color(0xFF3040a3),
             buttonType: SocialLoginButtonType.google,
-            onPressed: () => signInWithGoogle(),
+            onPressed: () {
+              Authentication().googleLogIn(context);
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSignupBtn() {
+  Widget _buildSignUpButton() {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -182,24 +167,10 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
       child: RichText(
-        text: const TextSpan(
+        text: TextSpan(
           children: [
-            TextSpan(
-              text: 'Não possui uma conta? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'Cadastre-se',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            TextSpan(text: 'Não possui uma conta? ', style: textStyle),
+            TextSpan(text: 'Cadastre-se', style: labelStyle),
           ],
         ),
       ),
@@ -229,43 +200,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                height: double.infinity,
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(
-                    20,
-                    40,
-                    20,
-                    10,
-                  ),
+                  padding: const EdgeInsets.all(25),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const Image(
-                        image: AssetImage(
-                          'assets/logos/logo.png',
-                        ),
+                        image: AssetImage('assets/logos/logo.png'),
                         width: 120,
                         height: 120,
                       ),
-                      const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.0)),
-                      const Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Color(0xffffffff),
-                          fontFamily: 'OpenSans',
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       const SizedBox(height: 10.0),
-                      _buildEmailTF(),
-                      _buildPasswordTF(),
-                      _buildForgotPasswordBtn(),
-                      _buildLoginBtn(),
+                      Text('ENTRAR', style: labelStyleTitle),
+                      const SizedBox(height: 25.0),
+                      _buildEmailTextField(),
+                      _buildPasswordTextField(),
+                      _buildForgotPasswordButton(),
+                      _buildLogInButton(),
                       _buildSignInWithText(),
-                      _buildLoginGoogleBtn(),
-                      _buildSignupBtn(),
+                      _buildGoogleLogInButton(),
+                      _buildSignUpButton(),
                     ],
                   ),
                 ),
@@ -275,10 +229,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  Future signInWithGoogle() async {
-    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-    provider.googleLogIn();
   }
 }

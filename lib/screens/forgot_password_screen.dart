@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rac/main.dart';
+import 'package:rac/services/reset_password.dart';
 import 'package:rac/utilities/constants.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -15,35 +15,32 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _emailController = TextEditingController();
 
-  Widget _buildEmailTF() {
+  Widget _buildEmailTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
+        Text(
           'Email',
-          style: TextStyle(color: Color(0xFFFFFFFF)),
+          style: labelStyle,
         ),
         const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 55.0,
+          decoration: boxDecorationStyle,
+          height: 60,
           child: TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: const InputDecoration(
+            style: textStyle,
+            decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
                 Icons.email,
                 color: Colors.white,
               ),
               hintText: 'Digite seu Email',
-              hintStyle: kHintTextStyle,
+              hintStyle: textStyle,
             ),
           ),
         ),
@@ -51,28 +48,27 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Widget _buildForgotPasswordBtn() {
+  Widget _buildForgotPasswordButton() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SocialLoginButton(
             borderRadius: 30,
             backgroundColor: Colors.white,
-            text: "ENVIAR EMAIL DE RECUPERAÇÃO DE SENHA",
+            text: "ENVIAR EMAIL",
             textColor: const Color(0xFF3040a3),
             buttonType: SocialLoginButtonType.generalLogin,
-            onPressed: () => resetPassword(),
+            onPressed: () {
+              ResetPassword().sendEmail(context, _emailController.text.trim());
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildGoBackBtn() {
+  Widget _buildGoBackButton() {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -81,24 +77,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         );
       },
       child: RichText(
-        text: const TextSpan(
+        text: TextSpan(
           children: [
-            TextSpan(
-              text: 'Lembrou sua senha? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'Voltar',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            TextSpan(text: 'Lembrou sua senha? ', style: textStyle),
+            TextSpan(text: 'Voltar', style: labelStyle),
           ],
         ),
       ),
@@ -132,12 +114,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(
-                    20,
-                    40,
-                    20,
-                    10,
-                  ),
+                  padding: const EdgeInsets.all(25),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -148,24 +125,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         width: 120,
                         height: 120,
                       ),
-                      const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.0)),
-                      const Text(
-                        'Recuperar de Senha',
-                        style: TextStyle(
-                          color: Color(0xffffffff),
-                          fontFamily: 'OpenSans',
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       const SizedBox(height: 10.0),
-                      _buildEmailTF(),
-                      _buildForgotPasswordBtn(),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      _buildGoBackBtn(),
+                      Text('RECUPERAR SENHA', style: labelStyleTitle),
+                      const SizedBox(height: 25.0),
+                      _buildEmailTextField(),
+                      const SizedBox(height: 20.0),
+                      _buildForgotPasswordButton(),
+                      _buildGoBackButton(),
                     ],
                   ),
                 ),
@@ -175,24 +141,5 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
       ),
     );
-  }
-
-  Future resetPassword() async {
-    try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: _emailController.text.trim());
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Email enviado! Verifique a caixa de Spam."),
-        duration: Duration(seconds: 2),
-        backgroundColor: Color.fromARGB(255, 58, 150, 16),
-      ));
-    } on FirebaseAuthException {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            "Esse email não está cadastrado! Cadastre-se ou tente novamente!"),
-        duration: Duration(seconds: 2),
-        backgroundColor: Color.fromARGB(255, 187, 24, 12),
-      ));
-    }
   }
 }

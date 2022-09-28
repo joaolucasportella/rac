@@ -15,8 +15,6 @@ class SlidersScreenState extends State<SlidersScreen> {
   final padding = const EdgeInsets.symmetric(horizontal: 60);
   final paddingBottom = const EdgeInsets.fromLTRB(0, 0, 0, 22);
 
-  List<double> servoData = [];
-
   double value1 = 50;
   double value2 = 50;
   double value3 = 50;
@@ -31,7 +29,7 @@ class SlidersScreenState extends State<SlidersScreen> {
         Padding(padding: padding),
         const Text(
           "Motor 1",
-          style: kLabelStyleDark,
+          style: labelStyleDark,
         ),
         SfSlider(
           activeColor: const Color(0xFF5969c9),
@@ -47,7 +45,7 @@ class SlidersScreenState extends State<SlidersScreen> {
         Padding(padding: paddingBottom),
         const Text(
           'Motor 2',
-          style: kLabelStyleDark,
+          style: labelStyleDark,
         ),
         SfSlider(
           activeColor: const Color(0xFF5969c9),
@@ -63,7 +61,7 @@ class SlidersScreenState extends State<SlidersScreen> {
         Padding(padding: paddingBottom),
         const Text(
           'Motor 3',
-          style: kLabelStyleDark,
+          style: labelStyleDark,
         ),
         SfSlider(
           activeColor: const Color(0xFF5969c9),
@@ -79,7 +77,7 @@ class SlidersScreenState extends State<SlidersScreen> {
         Padding(padding: paddingBottom),
         const Text(
           'Motor 4',
-          style: kLabelStyleDark,
+          style: labelStyleDark,
         ),
         SfSlider(
           activeColor: const Color(0xFF5969c9),
@@ -95,7 +93,7 @@ class SlidersScreenState extends State<SlidersScreen> {
         Padding(padding: paddingBottom),
         const Text(
           'Motor 5',
-          style: kLabelStyleDark,
+          style: labelStyleDark,
         ),
         SfSlider(
           activeColor: const Color(0xFF5969c9),
@@ -111,7 +109,7 @@ class SlidersScreenState extends State<SlidersScreen> {
         Padding(padding: paddingBottom),
         const Text(
           'Motor 6',
-          style: kLabelStyleDark,
+          style: labelStyleDark,
         ),
         SfSlider(
           activeColor: const Color(0xFF5969c9),
@@ -130,62 +128,64 @@ class SlidersScreenState extends State<SlidersScreen> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
-    return Scaffold(
-      endDrawer: const NavigationDrawerWidget(),
-      appBar: AppBar(
-        title: const Text("RAC"),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                Color(0xFF3040a3),
-                Color(0xFF5969c9),
-              ])),
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        endDrawer: const NavigationDrawerWidget(),
+        appBar: AppBar(
+          title: const Text("RAC"),
+          centerTitle: true,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                  Color(0xFF3040a3),
+                  Color(0xFF5969c9),
+                ])),
+          ),
         ),
-      ),
-      backgroundColor: Colors.white,
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: Stack(
-          children: <Widget>[
-            SizedBox(
-              height: double.infinity,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(
-                  20,
-                  50,
-                  20,
-                  10,
+        backgroundColor: Colors.white,
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: Stack(
+            children: <Widget>[
+              SizedBox(
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(
+                    20,
+                    50,
+                    20,
+                    10,
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      sliders(),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  children: <Widget>[
-                    sliders(),
-                  ],
-                ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: const Color(0xFF3040a3),
-        icon: const Icon(Icons.save),
-        label: const Text("Save"),
-        onPressed: () {
-          servoData.add(value1);
-          servoData.add(value2);
-          servoData.add(value3);
-          servoData.add(value4);
-          servoData.add(value5);
-          servoData.add(value6);
-          debugPrint(servoData.toString());
-        },
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: const Color(0xFF3040a3),
+          icon: const Icon(Icons.save),
+          label: const Text("Save"),
+          onPressed: () {
+            List<double> servoData = [];
+            servoData.add(value1);
+            servoData.add(value2);
+            servoData.add(value3);
+            servoData.add(value4);
+            servoData.add(value5);
+            servoData.add(value6);
+            debugPrint(servoData.toString());
+          },
+        ),
       ),
     );
   }

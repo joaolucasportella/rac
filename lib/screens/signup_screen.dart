@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rac/main.dart';
-import 'package:rac/services/normal_authentication.dart';
+import 'package:rac/services/authentication.dart';
 import 'package:rac/utilities/constants.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -17,36 +17,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
 
-  Widget _buildEmailTF() {
+  Widget _buildEmailTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
+        Text(
           'Email',
-          style: kLabelStyle,
+          style: labelStyle,
         ),
         const SizedBox(height: 10.0),
         Container(
           margin: const EdgeInsets.only(bottom: 30.0),
           alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 55.0,
+          decoration: boxDecorationStyle,
+          height: 60,
           child: TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: const InputDecoration(
+            style: textStyle,
+            decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
                 Icons.email,
                 color: Colors.white,
               ),
               hintText: 'Digite seu Email',
-              hintStyle: kHintTextStyle,
+              hintStyle: textStyle,
             ),
           ),
         ),
@@ -54,36 +51,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildPasswordTF() {
+  Widget _buildPasswordTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
+        Text(
           'Senha',
-          style: kLabelStyle,
+          style: labelStyle,
         ),
         const SizedBox(height: 10.0),
         Container(
           margin: const EdgeInsets.only(bottom: 30.0),
           alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 52.0,
+          decoration: boxDecorationStyle,
+          height: 60,
           child: TextField(
             controller: _passwordController,
             obscureText: true,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: const InputDecoration(
+            style: textStyle,
+            decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
               hintText: 'Digite sua senha',
-              hintStyle: kHintTextStyle,
+              hintStyle: textStyle,
             ),
           ),
         ),
@@ -91,36 +85,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildPasswordTF2() {
+  Widget _buildPasswordTextField2() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
+        Text(
           'Confirmar Senha',
-          style: kLabelStyle,
+          style: labelStyle,
         ),
         const SizedBox(height: 10.0),
         Container(
-          margin: const EdgeInsets.only(bottom: 50.0),
           alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 52.0,
+          decoration: boxDecorationStyle,
+          height: 60,
           child: TextField(
             controller: _password2Controller,
             obscureText: true,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: const InputDecoration(
+            style: textStyle,
+            decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
               hintText: 'Digite sua senha',
-              hintStyle: kHintTextStyle,
+              hintStyle: textStyle,
             ),
           ),
         ),
@@ -128,13 +118,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildSignUpBtn() {
+  Widget _buildSignUpButton() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SocialLoginButton(
             borderRadius: 30,
@@ -145,12 +132,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
             onPressed: () {
               if (_passwordController.text == _password2Controller.text &&
                   _passwordController.text.trim().length >= 6) {
-                Authentication().signUp(_emailController.text.trim(),
+                Authentication().signUp(context, _emailController.text.trim(),
                     _passwordController.text.trim());
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainPage()),
-                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Email ou Senha inválidos! Tente novamente!",
+                      style: textStyle),
+                  duration: const Duration(seconds: 3),
+                  backgroundColor: const Color.fromARGB(255, 187, 24, 12),
+                ));
               }
             },
           ),
@@ -159,7 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildLoginButton() {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -168,24 +158,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       },
       child: RichText(
-        text: const TextSpan(
+        text: TextSpan(
           children: [
-            TextSpan(
-              text: 'Já possui uma conta? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'Login',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            TextSpan(text: 'Já possui uma conta? ', style: textStyle),
+            TextSpan(text: 'Entrar', style: labelStyle),
           ],
         ),
       ),
@@ -217,41 +193,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               SizedBox(
-                height: double.infinity,
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(
-                    20,
-                    40,
-                    20,
-                    10,
-                  ),
+                  padding: const EdgeInsets.all(25),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const Image(
-                        image: AssetImage(
-                          'assets/logos/logo.png',
-                        ),
+                        image: AssetImage('assets/logos/logo.png'),
                         width: 120,
                         height: 120,
                       ),
-                      const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.0)),
-                      const Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: Color(0xffffffff),
-                          fontFamily: 'OpenSans',
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       const SizedBox(height: 10.0),
-                      _buildEmailTF(),
-                      _buildPasswordTF(),
-                      _buildPasswordTF2(),
-                      _buildSignUpBtn(),
-                      _buildLoginBtn(),
+                      Text('CADASTRAR', style: labelStyleTitle),
+                      const SizedBox(height: 25.0),
+                      _buildEmailTextField(),
+                      _buildPasswordTextField(),
+                      _buildPasswordTextField2(),
+                      const SizedBox(height: 20.0),
+                      _buildSignUpButton(),
+                      _buildLoginButton(),
                     ],
                   ),
                 ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rac/main.dart';
 import 'package:rac/screens/presets_screen.dart';
 import 'package:rac/screens/devices_screen.dart';
-import 'package:rac/services/normal_authentication.dart';
+import 'package:rac/services/authentication.dart';
 import 'package:rac/utilities/constants.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -30,15 +30,12 @@ class NavigationDrawerWidget extends StatelessWidget {
             ])),
         child: ListView(
           children: <Widget>[
-            //Material(
             Padding(padding: padding),
             buildHeader(imagem, name, email),
             btn(context),
             const Divider(
               color: Color(0xFFffffff),
             ),
-            buildMenuItem('Configurações', Icons.settings,
-                () => selectedItem(context, 0)),
             buildMenuItem(
                 'Bluetooth', Icons.bluetooth, () => selectedItem(context, 1)),
             buildMenuItem(
@@ -63,7 +60,7 @@ class NavigationDrawerWidget extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: kLabelStyleHeader,
+                  style: labelStyleHeader,
                 ),
                 Text(
                   email,
