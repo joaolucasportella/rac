@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:rac/main.dart';
 import 'package:rac/services/authentication.dart';
 import 'package:rac/utilities/constants.dart';
+import 'package:rac/utilities/messages.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -135,12 +136,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Authentication().signUp(context, _emailController.text.trim(),
                     _passwordController.text.trim());
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Email ou Senha inválidos! Tente novamente!",
-                      style: textStyle),
-                  duration: const Duration(seconds: 3),
-                  backgroundColor: const Color.fromARGB(255, 187, 24, 12),
-                ));
+                messageToUser(
+                    context, "Email ou Senha inválidos! Tente novamente!", 2);
               }
             },
           ),
