@@ -211,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 120,
                       ),
                       const SizedBox(height: 10.0),
-                      Text('ENTRAR', style: labelStyleTitle),
+                      Text('ENTRAR', style: textStyleTitle),
                       const SizedBox(height: 25.0),
                       _buildEmailTextField(),
                       _buildPasswordTextField(),

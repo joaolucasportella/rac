@@ -7,6 +7,18 @@ final textStyle = GoogleFonts.montserrat(
   fontWeight: FontWeight.w500,
 );
 
+final textStyleBlue = GoogleFonts.montserrat(
+  fontSize: 15,
+  color: Colors.blue,
+  fontWeight: FontWeight.w500,
+);
+
+final textStyleTitle = GoogleFonts.montserrat(
+  color: Colors.white,
+  fontSize: 25,
+  fontWeight: FontWeight.w600,
+);
+
 final labelStyle = GoogleFonts.montserrat(
   fontSize: 15,
   color: Colors.white,
@@ -24,12 +36,6 @@ const labelStyleHeader = TextStyle(
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSans',
   fontSize: 16,
-);
-
-final labelStyleTitle = GoogleFonts.montserrat(
-  color: Colors.white,
-  fontSize: 25,
-  fontWeight: FontWeight.w600,
 );
 
 final boxDecorationStyle = BoxDecoration(

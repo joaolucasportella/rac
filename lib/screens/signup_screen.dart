@@ -201,7 +201,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 120,
                       ),
                       const SizedBox(height: 10.0),
-                      Text('CADASTRAR', style: labelStyleTitle),
+                      Text('CADASTRAR', style: textStyleTitle),
                       const SizedBox(height: 25.0),
                       _buildEmailTextField(),
                       _buildPasswordTextField(),

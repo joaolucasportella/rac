@@ -126,7 +126,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         height: 120,
                       ),
                       const SizedBox(height: 10.0),
-                      Text('RECUPERAR SENHA', style: labelStyleTitle),
+                      Text('RECUPERAR SENHA', style: textStyleTitle),
                       const SizedBox(height: 25.0),
                       _buildEmailTextField(),
                       const SizedBox(height: 20.0),
