@@ -14,6 +14,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _auth = Authentication();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
@@ -133,7 +134,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             onPressed: () {
               if (_passwordController.text == _password2Controller.text &&
                   _passwordController.text.trim().length >= 6) {
-                Authentication().signUp(context, _emailController.text.trim(),
+                _auth.signUp(context, _emailController.text.trim(),
                     _passwordController.text.trim());
               } else {
                 messageToUser(

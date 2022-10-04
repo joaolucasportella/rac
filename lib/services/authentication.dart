@@ -5,13 +5,17 @@ import 'package:rac/main.dart';
 import 'package:rac/utilities/messages.dart';
 
 class Authentication {
-  final _auth = FirebaseAuth.instance;
-  final _googleSignIn = GoogleSignIn();
+  static final auth = FirebaseAuth.instance;
+  static final googleSignIn = GoogleSignIn();
   static bool _loggedWithGoogle = false;
+
+  String getCurrentUser() {
+    return auth.currentUser.toString();
+  }
 
   Future signUp(context, email, password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -30,7 +34,7 @@ class Authentication {
 
   Future signIn(context, email, password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await auth.signInWithEmailAndPassword(email: email, password: password);
       _loggedWithGoogle = false;
       messageToUser(context, "Bem-vindo!", 1);
       debugPrint("User logged in!");
@@ -43,7 +47,7 @@ class Authentication {
 
   Future googleLogIn(context) async {
     try {
-      var googleUser = await _googleSignIn.signIn();
+      var googleUser = await googleSignIn.signIn();
       debugPrint(googleUser.toString());
       if (googleUser == null) return;
 
@@ -51,7 +55,7 @@ class Authentication {
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-      await _auth.signInWithCredential(credential);
+      await auth.signInWithCredential(credential);
       _loggedWithGoogle = true;
       messageToUser(context, "Bem-vindo!", 1);
     } catch (e) {
@@ -62,9 +66,9 @@ class Authentication {
 
   Future signOut() async {
     if (_loggedWithGoogle) {
-      await _googleSignIn.disconnect();
+      await googleSignIn.disconnect();
     }
-    await _auth.signOut();
+    await auth.signOut();
     debugPrint("User logged out!");
   }
 }

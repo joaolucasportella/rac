@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rac/services/database.dart';
 import 'package:rac/utilities/constants.dart';
 
 class PresetScreen extends StatefulWidget {
@@ -9,7 +10,14 @@ class PresetScreen extends StatefulWidget {
 }
 
 class PresetScreenState extends State<PresetScreen> {
-  final padding = const EdgeInsets.symmetric(horizontal: 60);
+  final _database = Database();
+  int countOfPresets = 0;
+
+  PresetScreenState() {
+    _database.countPresets().then((value) => setState(() {
+          countOfPresets = value;
+        }));
+  }
 
   @override
   Widget build(
@@ -44,7 +52,7 @@ class PresetScreenState extends State<PresetScreen> {
         padding: const EdgeInsets.all(4),
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
-        children: _buildGridTileList(10));
+        children: _buildGridTileList(countOfPresets));
   }
 
   List<Container> _buildGridTileList(int count) => List.generate(
@@ -52,7 +60,9 @@ class PresetScreenState extends State<PresetScreen> {
         (i) => Container(
           padding: const EdgeInsets.all(5),
           child: ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              _database.getPresets(i);
+            },
             style: ElevatedButton.styleFrom(
                 foregroundColor: const Color(0xFF5969c9),
                 backgroundColor: Colors.white,
@@ -61,8 +71,8 @@ class PresetScreenState extends State<PresetScreen> {
                   width: 5,
                   color: Colors.blue,
                 )),
-            icon: const Icon(Icons.settings),
-            label: Text("preset", style: textStyleBlue),
+            icon: const Icon(Icons.settings_outlined),
+            label: Text("Preset | ${i + 1}", style: textStyleBlue),
           ),
         ),
       );

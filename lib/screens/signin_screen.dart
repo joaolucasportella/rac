@@ -14,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = Authentication();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
               textColor: const Color(0xFF3040a3),
               buttonType: SocialLoginButtonType.generalLogin,
               onPressed: () {
-                Authentication().signIn(context, _emailController.text.trim(),
+                _auth.signIn(context, _emailController.text.trim(),
                     _passwordController.text.trim());
               }),
         ],
@@ -150,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
             textColor: const Color(0xFF3040a3),
             buttonType: SocialLoginButtonType.google,
             onPressed: () {
-              Authentication().googleLogIn(context);
+              _auth.googleLogIn(context);
             },
           ),
         ],

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:rac/main.dart';
 import 'package:rac/screens/presets_screen.dart';
-import 'package:rac/screens/devices_screen.dart';
 import 'package:rac/services/authentication.dart';
 import 'package:rac/utilities/constants.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
+  NavigationDrawerWidget({Key? key}) : super(key: key);
+
+  final _auth = Authentication();
   final padding = const EdgeInsets.symmetric(horizontal: 20);
 
-  const NavigationDrawerWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     const String name = 'Nome do Usuário';
@@ -91,7 +92,7 @@ class NavigationDrawerWidget extends StatelessWidget {
           textColor: const Color(0xFF3040a3),
           buttonType: SocialLoginButtonType.generalLogin,
           onPressed: () {
-            Authentication().signOut();
+            _auth.signOut();
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const MainPage()),
@@ -118,8 +119,7 @@ class NavigationDrawerWidget extends StatelessWidget {
   void selectedItem(BuildContext context, int index) {
     switch (index) {
       case 1:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const ScanDevicesScreen()));
+        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ScanDevicesScreen()));
         break;
       case 2:
         Navigator.of(context).push(
