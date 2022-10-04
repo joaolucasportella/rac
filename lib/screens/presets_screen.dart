@@ -11,11 +11,11 @@ class PresetScreen extends StatefulWidget {
 
 class PresetScreenState extends State<PresetScreen> {
   final _database = Database();
-  int countOfPresets = 0;
+  int _countOfPresets = 0;
 
   PresetScreenState() {
     _database.countPresets().then((value) => setState(() {
-          countOfPresets = value;
+          _countOfPresets = value;
         }));
   }
 
@@ -52,7 +52,7 @@ class PresetScreenState extends State<PresetScreen> {
         padding: const EdgeInsets.all(4),
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
-        children: _buildGridTileList(countOfPresets));
+        children: _buildGridTileList(_countOfPresets));
   }
 
   List<Container> _buildGridTileList(int count) => List.generate(
