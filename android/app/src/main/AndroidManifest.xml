@@ -2,6 +2,9 @@
     package="com.example.rac">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />  
+	 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />  
+	 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:label="RAC"
@@ -41,9 +44,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
-        <!-- Fecebook Login Requirements -->
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
     </application>
 </manifest>

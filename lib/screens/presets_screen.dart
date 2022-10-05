@@ -12,6 +12,8 @@ class PresetScreen extends StatefulWidget {
 class PresetScreenState extends State<PresetScreen> {
   final _database = Database();
   int _countOfPresets = 0;
+  bool _isVisible = false;
+  Color cor = Colors.blue;
 
   PresetScreenState() {
     _database.countPresets().then((value) => setState(() {
@@ -58,22 +60,54 @@ class PresetScreenState extends State<PresetScreen> {
   List<Container> _buildGridTileList(int count) => List.generate(
         count,
         (i) => Container(
-          padding: const EdgeInsets.all(5),
-          child: ElevatedButton.icon(
-            onPressed: () {
-              _database.getPresets(i);
-            },
-            style: ElevatedButton.styleFrom(
-                foregroundColor: const Color(0xFF5969c9),
-                backgroundColor: Colors.white,
-                minimumSize: const Size(181, 181),
-                side: const BorderSide(
-                  width: 5,
-                  color: Colors.blue,
-                )),
-            icon: const Icon(Icons.settings_outlined),
-            label: Text("Preset | ${i + 1}", style: textStyleBlue),
-          ),
-        ),
+            width: 181,
+            height: 181,
+            padding: const EdgeInsets.all(5),
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: <Widget>[
+                GestureDetector(
+                  onLongPress: () {
+                    debugPrint("segurou");
+                    setState(() {
+                      _isVisible = !_isVisible;
+                      if (_isVisible) {
+                        cor = Colors.red;
+                      } else {
+                        cor = Colors.blue;
+                      }
+                    });
+                  },
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      _database.getPresets(i);
+                    },
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: const Color(0xFF5969c9),
+                        backgroundColor: Colors.white,
+                        minimumSize: const Size(181, 181),
+                        side: BorderSide(
+                          width: 5,
+                          color: cor,
+                        )),
+                    icon: const Icon(Icons.settings_outlined),
+                    label: Text("Preset | ${i + 1}", style: textStyleBlue),
+                  ),
+                ),
+                Visibility(
+                  visible: _isVisible,
+                  child: IconButton(
+                      onPressed: () {
+                        //_database.deletePreset(i);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const PresetScreen()));
+                      },
+                      icon: const Icon(Icons.delete),
+                      color: cor),
+                )
+              ],
+            )),
       );
 }

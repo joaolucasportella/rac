@@ -22,6 +22,29 @@ class Database {
     }
   }
 
+  /*Future deletePreset(int i) async {
+    final ref = _database.ref();
+    final snapshot = await ref.child(_user!).get();
+    if (snapshot.exists) {
+      snapshot.child(i.toString()).ref.remove();
+      updatePresetIds();
+    }
+  }
+
+  Future updatePresetIds() async {
+    final ref = _database.ref();
+    final snapshot = await ref.child(_user!).get();
+    final count = await countPresets();
+    if (snapshot.exists) {
+      List data = snapshot.ref.;
+      for (var i = 0; i < count; i++) {
+        snapshot.child(i.toString()).
+        snapshot.ref.update()
+      }
+      
+    }
+  }*/
+
   Future<int> countPresets() async {
     final ref = _database.ref();
     final snapshot = await ref.child(_user!).get();
