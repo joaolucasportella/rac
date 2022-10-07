@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rac/main.dart';
+import 'package:rac/screens/bluetooth_screen.dart';
 import 'package:rac/screens/presets_screen.dart';
 import 'package:rac/services/authentication.dart';
 import 'package:rac/utilities/constants.dart';
@@ -119,7 +120,8 @@ class NavigationDrawerWidget extends StatelessWidget {
   void selectedItem(BuildContext context, int index) {
     switch (index) {
       case 1:
-        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ScanDevicesScreen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const BluetoothScreen()));
         break;
       case 2:
         Navigator.of(context).push(
