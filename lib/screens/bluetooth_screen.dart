@@ -16,6 +16,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
   final _simplebluePlugin = Simpleblue();
   static const _serviceUUID = null;
   static const _scanTimeout = 15000;
+  static late bool _listen = true;
 
   var devices = <String, BluetoothDevice>{};
 
@@ -25,23 +26,26 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
   void initState() {
     super.initState();
 
-    _simplebluePlugin.listenConnectedDevice().listen((connectedDevice) {
-      debugPrint("Connected device: $connectedDevice");
+    if (_listen) {
+      _listen = false;
+      _simplebluePlugin.listenConnectedDevice().listen((connectedDevice) {
+        debugPrint("Connected device: $connectedDevice");
 
-      if (connectedDevice != null) {
-        setState(() {
-          devices[connectedDevice.uuid] = connectedDevice;
-        });
-      }
+        if (connectedDevice != null) {
+          setState(() {
+            devices[connectedDevice.uuid] = connectedDevice;
+          });
+        }
 
-      connectedDevice?.stream?.listen((received) {
-        setState(() {
-          receivedData += "${DateTime.now().toString()}: $received\n";
+        connectedDevice?.stream?.listen((received) {
+          setState(() {
+            receivedData += "${DateTime.now().toString()}: $received\n";
+          });
         });
+      }).onError((err) {
+        debugPrint(err);
       });
-    }).onError((err) {
-      debugPrint(err);
-    });
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       scan();

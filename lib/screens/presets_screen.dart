@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rac/screens/sliders_screen.dart';
 import 'package:rac/services/database.dart';
 import 'package:rac/utilities/constants.dart';
 
@@ -25,27 +26,41 @@ class PresetScreenState extends State<PresetScreen> {
   Widget build(
     BuildContext context,
   ) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("PRESETS", style: textStyleTitle),
-          centerTitle: true,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [
-                  Color(0xFF3040a3),
-                  Color(0xFF5969c9),
-                ])),
-          ),
-        ),
-        backgroundColor: Colors.white,
-        body: SizedBox(
-          height: double.infinity,
-          width: double.infinity,
-          child: _presetsButtons(),
-        ));
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text("PRESETS", style: textStyleTitle),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              flexibleSpace: Container(
+                alignment: Alignment.bottomLeft,
+                padding: const EdgeInsets.all(15),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SlidersScreen()));
+                  },
+                  child: const Icon(Icons.arrow_back),
+                ),
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                      Color(0xFF3040a3),
+                      Color(0xFF5969c9),
+                    ])),
+              ),
+            ),
+            backgroundColor: Colors.white,
+            body: SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: _presetsButtons(),
+            )));
   }
 
   Widget _presetsButtons() {

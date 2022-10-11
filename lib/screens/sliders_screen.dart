@@ -16,12 +16,12 @@ class SlidersScreenState extends State<SlidersScreen> {
   final _database = Database();
   final _padding = const EdgeInsets.symmetric(horizontal: 60);
   final _paddingBottom = const EdgeInsets.fromLTRB(0, 0, 0, 22);
-  double _value1 = 50;
-  double _value2 = 50;
-  double _value3 = 50;
-  double _value4 = 50;
-  double _value5 = 50;
-  double _value6 = 50;
+  double _value1 = 90;
+  double _value2 = 90;
+  double _value3 = 90;
+  double _value4 = 90;
+  double _value5 = 90;
+  double _value6 = 90;
   int _times = 0;
 
   SlidersScreenState() {
@@ -42,13 +42,13 @@ class SlidersScreenState extends State<SlidersScreen> {
         SfSlider(
           activeColor: const Color(0xFF5969c9),
           value: _value1,
-          interval: 20,
+          interval: 36,
           showTicks: true,
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value1 = newRating);
           },
-          max: 100,
+          max: 180,
         ),
         Padding(padding: _paddingBottom),
         const Text(
@@ -58,13 +58,13 @@ class SlidersScreenState extends State<SlidersScreen> {
         SfSlider(
           activeColor: const Color(0xFF5969c9),
           value: _value2,
-          interval: 20,
+          interval: 36,
           showTicks: true,
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value2 = newRating);
           },
-          max: 100,
+          max: 180,
         ),
         Padding(padding: _paddingBottom),
         const Text(
@@ -74,13 +74,13 @@ class SlidersScreenState extends State<SlidersScreen> {
         SfSlider(
           activeColor: const Color(0xFF5969c9),
           value: _value3,
-          interval: 20,
+          interval: 36,
           showTicks: true,
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value3 = newRating);
           },
-          max: 100,
+          max: 180,
         ),
         Padding(padding: _paddingBottom),
         const Text(
@@ -90,13 +90,13 @@ class SlidersScreenState extends State<SlidersScreen> {
         SfSlider(
           activeColor: const Color(0xFF5969c9),
           value: _value4,
-          interval: 20,
+          interval: 36,
           showTicks: true,
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value4 = newRating);
           },
-          max: 100,
+          max: 180,
         ),
         Padding(padding: _paddingBottom),
         const Text(
@@ -106,13 +106,13 @@ class SlidersScreenState extends State<SlidersScreen> {
         SfSlider(
           activeColor: const Color(0xFF5969c9),
           value: _value5,
-          interval: 20,
+          interval: 36,
           showTicks: true,
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value5 = newRating);
           },
-          max: 100,
+          max: 180,
         ),
         Padding(padding: _paddingBottom),
         const Text(
@@ -122,13 +122,13 @@ class SlidersScreenState extends State<SlidersScreen> {
         SfSlider(
           activeColor: const Color(0xFF5969c9),
           value: _value6,
-          interval: 20,
+          interval: 36,
           showTicks: true,
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value6 = newRating);
           },
-          max: 100,
+          max: 180,
         ),
         Padding(padding: _paddingBottom),
       ],
@@ -144,6 +144,7 @@ class SlidersScreenState extends State<SlidersScreen> {
         appBar: AppBar(
           title: const Text("RAC"),
           centerTitle: true,
+          automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
