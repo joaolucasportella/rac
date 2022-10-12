@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rac/services/bluetooth.dart';
 import 'package:rac/services/database.dart';
 import 'package:rac/utilities/navigation_drawer.dart';
 import 'package:rac/utilities/constants.dart';
+import 'package:simpleblue/model/bluetooth_device.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class SlidersScreen extends StatefulWidget {
@@ -16,18 +18,30 @@ class SlidersScreenState extends State<SlidersScreen> {
   final _database = Database();
   final _padding = const EdgeInsets.symmetric(horizontal: 60);
   final _paddingBottom = const EdgeInsets.fromLTRB(0, 0, 0, 22);
+  BluetoothDevice? _connectedDevice;
+
   double _value1 = 90;
   double _value2 = 90;
   double _value3 = 90;
   double _value4 = 90;
   double _value5 = 90;
   double _value6 = 90;
+
+  List<double> servoData = [90, 90, 90, 90, 90, 90];
+
   int _times = 0;
 
   SlidersScreenState() {
     _database.countPresets().then((value) => setState(() {
           _times = value;
         }));
+
+    Bluetooth.plugin.listenConnectedDevice().listen((connectedDevice) {
+      debugPrint("Connected device: $connectedDevice");
+      _connectedDevice = connectedDevice;
+    }).onError((err) {
+      debugPrint(err);
+    });
   }
 
   Widget sliders() {
@@ -47,6 +61,13 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value1 = newRating);
+            servoData[0] = _value1;
+            if (_connectedDevice != null) {
+              var servoDataStringfy =
+                  servoData.map((e) => e.toString()).toList().join("");
+              Bluetooth.plugin
+                  .write(_connectedDevice!.uuid, servoDataStringfy.codeUnits);
+            }
           },
           max: 180,
         ),
@@ -63,6 +84,13 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value2 = newRating);
+            servoData[1] = _value1;
+            if (_connectedDevice != null) {
+              var servoDataStringfy =
+                  servoData.map((e) => e.toString()).toList().join("");
+              Bluetooth.plugin
+                  .write(_connectedDevice!.uuid, servoDataStringfy.codeUnits);
+            }
           },
           max: 180,
         ),
@@ -79,6 +107,13 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value3 = newRating);
+            servoData[2] = _value1;
+            if (_connectedDevice != null) {
+              var servoDataStringfy =
+                  servoData.map((e) => e.toString()).toList().join("");
+              Bluetooth.plugin
+                  .write(_connectedDevice!.uuid, servoDataStringfy.codeUnits);
+            }
           },
           max: 180,
         ),
@@ -95,6 +130,13 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value4 = newRating);
+            servoData[3] = _value1;
+            if (_connectedDevice != null) {
+              var servoDataStringfy =
+                  servoData.map((e) => e.toString()).toList().join("");
+              Bluetooth.plugin
+                  .write(_connectedDevice!.uuid, servoDataStringfy.codeUnits);
+            }
           },
           max: 180,
         ),
@@ -111,6 +153,13 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value5 = newRating);
+            servoData[4] = _value1;
+            if (_connectedDevice != null) {
+              var servoDataStringfy =
+                  servoData.map((e) => e.toString()).toList().join("");
+              Bluetooth.plugin
+                  .write(_connectedDevice!.uuid, servoDataStringfy.codeUnits);
+            }
           },
           max: 180,
         ),
@@ -127,6 +176,13 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value6 = newRating);
+            servoData[5] = _value1;
+            if (_connectedDevice != null) {
+              var servoDataStringfy =
+                  servoData.map((e) => e.toString()).toList().join("");
+              Bluetooth.plugin
+                  .write(_connectedDevice!.uuid, servoDataStringfy.codeUnits);
+            }
           },
           max: 180,
         ),
@@ -185,13 +241,6 @@ class SlidersScreenState extends State<SlidersScreen> {
           icon: const Icon(Icons.save),
           label: const Text("Save"),
           onPressed: () {
-            List<double> servoData = [];
-            servoData.add(_value1);
-            servoData.add(_value2);
-            servoData.add(_value3);
-            servoData.add(_value4);
-            servoData.add(_value5);
-            servoData.add(_value6);
             _database.setPresets(_times, servoData);
             _times++;
             debugPrint(servoData.toString());
