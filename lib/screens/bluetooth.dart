@@ -2,31 +2,55 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:rac/services/bluetooth.dart';
-import 'package:rac/utilities/constants.dart';
+import 'package:simpleblue/model/bluetooth_device.dart';
+import 'package:simpleblue/simpleblue.dart';
 
-
-class BluetoothScreen extends StatefulWidget {
-  const BluetoothScreen({Key? key}) : super(key: key);
+class BluetoothDevices extends StatefulWidget {
+  const BluetoothDevices({Key? key}) : super(key: key);
 
   @override
-  State<BluetoothScreen> createState() => _BluetoothScreenState();
+  State<BluetoothDevices> createState() => _BluetoothDevicesState();
 }
 
-class _BluetoothScreenState extends State<BluetoothScreen> {
-  final _connectingUUIDs = <String>[];
+const serviceUUID = null;
+const scanTimeout = 15000;
+
+class _BluetoothDevicesState extends State<BluetoothDevices> {
+  final _simplebluePlugin = Simpleblue();
+
+  var devices = <String, BluetoothDevice>{};
+
+  String receivedData = '';
 
   @override
   void initState() {
     super.initState();
 
+    _simplebluePlugin.listenConnectedDevice().listen((connectedDevice) {
+      debugPrint("Connected device: $connectedDevice");
+
+      if (connectedDevice != null) {
+        setState(() {
+          devices[connectedDevice.uuid] = connectedDevice;
+        });
+      }
+
+      connectedDevice?.stream?.listen((received) {
+        setState(() {
+          receivedData += "${DateTime.now().toString()}: $received\n";
+        });
+      });
+    }).onError((err) {
+      debugPrint(err);
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       scan();
     });
 
-    Bluetooth.plugin.getDevices().then((value) => setState(() {
+    _simplebluePlugin.getDevices().then((value) => setState(() {
           for (var device in value) {
-            Bluetooth.devices[device.uuid] = device;
+            devices[device.uuid] = device;
           }
         }));
   }
@@ -45,14 +69,12 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
 
       if (isLocationGranted) {
         debugPrint("Location permission granted");
-        Bluetooth.plugin
-            .scanDevices(
-                serviceUUID: Bluetooth.serviceUUID,
-                timeout: Bluetooth.scanTimeout)
+        _simplebluePlugin
+            .scanDevices(serviceUUID: serviceUUID, timeout: scanTimeout)
             .listen((event) {
           setState(() {
             for (var device in event) {
-              Bluetooth.devices[device.uuid] = device;
+              devices[device.uuid] = device;
             }
           });
         });
@@ -65,44 +87,40 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-              title: Text("BLUETOOTH", style: textStyleTitle),
-              centerTitle: true,
-              automaticallyImplyLeading: false,
-              flexibleSpace: Container(
-                alignment: Alignment.bottomLeft,
-                padding: const EdgeInsets.all(15),
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                      Color(0xFF3040a3),
-                      Color(0xFF5969c9),
-                    ])),
-              ),
-            ),
+          title: const Text('Bluetooth'),
+        ),
         body: Column(children: [
           TextButton(
               child: const Text('Mostrar dispositivos pareados'),
               onPressed: () {
-                Bluetooth.plugin.getDevices().then((value) {
+                _simplebluePlugin.getDevices().then((value) {
                   setState(() {
                     for (var device in value) {
-                      Bluetooth.devices[device.uuid] = device;
+                      devices[device.uuid] = device;
                     }
                   });
                 });
               }),
           Expanded(
             child: buildDevices(),
-          )
+          ),
+          SizedBox(
+              height: 200,
+              child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    receivedData,
+                    style: const TextStyle(fontSize: 10),
+                  )))
         ]),
       ),
     );
   }
 
+  final _connectingUUIDs = <String>[];
+
   Widget buildDevices() {
-    final devList = Bluetooth.devices.values.toList();
+    final devList = devices.values.toList();
     return ListView.builder(
         itemCount: devList.length,
         itemBuilder: (context, index) {
@@ -111,12 +129,12 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
           return ListTile(
             onTap: () {
               if (device.isConnected) {
-                Bluetooth.plugin.disconnect(device.uuid);
+                _simplebluePlugin.disconnect(device.uuid);
               } else {
                 setState(() {
                   _connectingUUIDs.add(device.uuid);
                 });
-                Bluetooth.plugin.connect(device.uuid).then((value) {
+                _simplebluePlugin.connect(device.uuid).then((value) {
                   setState(() {
                     _connectingUUIDs.remove(device.uuid);
                   });
@@ -138,14 +156,14 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                       TextButton(
                           child: const Text('Write 1'),
                           onPressed: () {
-                            Bluetooth.plugin
-                                .write(device.uuid, "sample data".codeUnits);
+                            _simplebluePlugin.write(
+                                device.uuid, "sample data".codeUnits);
                           }),
                       TextButton(
                           child: const Text('Write 2'),
                           onPressed: () {
-                            Bluetooth.plugin
-                                .write(device.uuid, "sample data 2".codeUnits);
+                            _simplebluePlugin.write(
+                                device.uuid, "sample data 2".codeUnits);
                           })
                     ],
                   )
