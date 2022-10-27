@@ -16,7 +16,7 @@ class Database {
     final ref = _database.ref();
     final snapshot = await ref.child(_user!).get();
     if (snapshot.exists) {
-      debugPrint(snapshot.child(i.toString()).value.toString());
+            debugPrint(snapshot.child(i.toString()).value.toString());
     } else {
       debugPrint("No data available.");
     }

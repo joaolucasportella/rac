@@ -95,7 +95,10 @@ class PresetScreenState extends State<PresetScreen> {
                   },
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      _database.getPresets(i);
+                      if(!_isVisible){
+                        //_database.getPresets(i);
+                        debugPrint(SlidersScreenState().servoData[i]);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         foregroundColor: const Color(0xFF5969c9),

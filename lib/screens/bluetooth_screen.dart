@@ -129,7 +129,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                     ? const Icon(Icons.bluetooth_connected, color: Colors.blue)
                     : Icon(
                         Icons.bluetooth,
-                        color: Colors.grey.shade300,
+                        color: Colors.blue,
                       )),
             title: Text('${device.name ?? 'No name'}\n${device.uuid}'),
             subtitle: device.isConnected
