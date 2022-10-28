@@ -6,5 +6,5 @@ class Bluetooth {
   static var devices = <String, BluetoothDevice>{};
   static const serviceUUID = null;
   static const scanTimeout = 15000;
-  // static int qnt = 1;
+  static bool listen = true;
 }

@@ -27,27 +27,28 @@ class SlidersScreenState extends State<SlidersScreen> {
   double _value5 = 90;
   double _value6 = 90;
 
-  List<String> servoData = ["","","","","",""];
+  List<String> servoData = ["", "", "", "", "", ""];
 
   int _times = 0;
 
   SlidersScreenState() {
     _database.countPresets().then((value) => setState(() {
-          {debugPrint(value.toString());
-          _times = value;}
+          {
+            debugPrint(value.toString());
+            _times = value;
+          }
         }));
 
-    // if(Bluetooth.qnt == 1){
+    if (Bluetooth.listen) {
       Bluetooth.plugin.listenConnectedDevice().listen((connectedDevice) {
         debugPrint("Connected device: $connectedDevice");
         _connectedDevice = connectedDevice;
       }).onError((err) {
         debugPrint(err);
       });
-      // Bluetooth.qnt++;
-  // }
+      Bluetooth.listen = false;
     }
-    
+  }
 
   Widget sliders() {
     return Column(
@@ -67,20 +68,15 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value1 = newRating);
-
             String valueS1 = "";
+            if (_value1 >= 90) {
+              valueS1 = "A";
+            } else if (_value1 < 80) {
+              valueS1 = "B";
+            }
+            servoData[0] = valueS1;
             if (_connectedDevice != null) {
-              //String value = "s1"+_value1.toInt().toString()+"\n";
-              if(_value1 >= 90){
-                valueS1 = "A";
-              }
-              else if(_value1 < 80){
-                valueS1 = "B";
-              }
-              servoData[0] = valueS1;  
-              Bluetooth.plugin
-                  .write(_connectedDevice!.uuid, valueS1.codeUnits);
-
+              Bluetooth.plugin.write(_connectedDevice!.uuid, valueS1.codeUnits);
             }
           },
           max: 180,
@@ -99,30 +95,23 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value2 = newRating);
-            
             String valueS2 = "";
+            if (_value2 == 0) {
+              valueS2 = "C";
+            } else if (_value2 == 36) {
+              valueS2 = "D";
+            } else if (_value2 == 72) {
+              valueS2 = "E";
+            } else if (_value2 == 108) {
+              valueS2 = "F";
+            } else if (_value2 == 144) {
+              valueS2 = "G";
+            } else if (_value2 == 180) {
+              valueS2 = "H";
+            }
+            servoData[1] = valueS2;
             if (_connectedDevice != null) {
-              if(_value2 == 0){
-                valueS2 = "C";
-              }
-              else if(_value2 == 36){
-                valueS2 = "D";
-              }
-              else if(_value2 == 72){
-                valueS2 = "E";
-              }
-              else if(_value2 == 108){
-                valueS2 = "F";
-              }
-              else if(_value2 == 144){
-                valueS2 = "G";
-              }
-              else if(_value2 == 180){
-                valueS2 = "H";
-              }
-              Bluetooth.plugin
-                  .write(_connectedDevice!.uuid, valueS2.codeUnits);
-              servoData[1] = valueS2;  
+              Bluetooth.plugin.write(_connectedDevice!.uuid, valueS2.codeUnits);
             }
           },
           max: 180,
@@ -143,29 +132,23 @@ class SlidersScreenState extends State<SlidersScreen> {
             setState(() => _value3 = newRating);
             String valueS3 = "";
 
-            if (_connectedDevice != null) {
-              if(_value3 == 0){
-                valueS3 = "I";
-              }
-              else if(_value3 == 36){
-                valueS3 = "J";
-              }
-              else if(_value3 == 72){
-                valueS3 = "K";
-              }
-              else if(_value3 == 108){
-                valueS3 = "L";
-              }
-              else if(_value3 == 144){
-                valueS3 = "M";
-              }
-              else if(_value3 == 180){
-                valueS3 = "N";
-              }
-              Bluetooth.plugin
-                  .write(_connectedDevice!.uuid, valueS3.codeUnits);
+            if (_value3 == 0) {
+              valueS3 = "I";
+            } else if (_value3 == 36) {
+              valueS3 = "J";
+            } else if (_value3 == 72) {
+              valueS3 = "K";
+            } else if (_value3 == 108) {
+              valueS3 = "L";
+            } else if (_value3 == 144) {
+              valueS3 = "M";
+            } else if (_value3 == 180) {
+              valueS3 = "N";
             }
-            servoData[2] = valueS3;  
+            servoData[2] = valueS3;
+            if (_connectedDevice != null) {
+              Bluetooth.plugin.write(_connectedDevice!.uuid, valueS3.codeUnits);
+            }
           },
           max: 180,
         ),
@@ -183,30 +166,23 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value4 = newRating);
-
             String valueS4 = "";
+            if (_value4 == 0) {
+              valueS4 = "O";
+            } else if (_value4 == 36) {
+              valueS4 = "P";
+            } else if (_value4 == 72) {
+              valueS4 = "Q";
+            } else if (_value4 == 108) {
+              valueS4 = "R";
+            } else if (_value4 == 144) {
+              valueS4 = "S";
+            } else if (_value4 == 180) {
+              valueS4 = "T";
+            }
+            servoData[3] = valueS4;
             if (_connectedDevice != null) {
-              if(_value4 == 0){
-                valueS4 = "O";
-              }
-              else if(_value4 == 36){
-                valueS4 = "P";
-              }
-              else if(_value4 == 72){
-                valueS4 = "Q";
-              }
-              else if(_value4 == 108){
-                valueS4 = "R";
-              }
-              else if(_value4 == 144){
-                valueS4 = "S";
-              }
-              else if(_value4 == 180){
-                valueS4 = "T";
-              }
-              Bluetooth.plugin
-                  .write(_connectedDevice!.uuid, valueS4.codeUnits);
-              servoData[3] = valueS4;  
+              Bluetooth.plugin.write(_connectedDevice!.uuid, valueS4.codeUnits);
             }
           },
           max: 180,
@@ -225,30 +201,23 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value5 = newRating);
-
             String valueS5 = "";
+            if (_value5 == 0) {
+              valueS5 = "U";
+            } else if (_value5 == 36) {
+              valueS5 = "V";
+            } else if (_value5 == 72) {
+              valueS5 = "W";
+            } else if (_value5 == 108) {
+              valueS5 = "X";
+            } else if (_value5 == 144) {
+              valueS5 = "Y";
+            } else if (_value5 == 180) {
+              valueS5 = "Z";
+            }
+            servoData[4] = valueS5;
             if (_connectedDevice != null) {
-              if(_value5 == 0){
-                valueS5 = "U";
-              }
-              else if(_value5 == 36){
-                valueS5 = "V";
-              }
-              else if(_value5 == 72){
-                valueS5 = "W";
-              }
-              else if(_value5 == 108){
-                valueS5 = "X";
-              }
-              else if(_value5 == 144){
-                valueS5 = "Y";
-              }
-              else if(_value5 == 180){
-                valueS5 = "Z";
-              }
-              Bluetooth.plugin
-                  .write(_connectedDevice!.uuid, valueS5.codeUnits);
-              servoData[4] = valueS5;      
+              Bluetooth.plugin.write(_connectedDevice!.uuid, valueS5.codeUnits);
             }
           },
           max: 180,
@@ -267,31 +236,23 @@ class SlidersScreenState extends State<SlidersScreen> {
           enableTooltip: true,
           onChanged: (newRating) {
             setState(() => _value6 = newRating);
-            
-
             String valueS6 = "";
+            if (_value6 == 0) {
+              valueS6 = "a";
+            } else if (_value6 == 36) {
+              valueS6 = "b";
+            } else if (_value6 == 72) {
+              valueS6 = "c";
+            } else if (_value6 == 108) {
+              valueS6 = "d";
+            } else if (_value6 == 144) {
+              valueS6 = "e";
+            } else if (_value6 == 180) {
+              valueS6 = "f";
+            }
+            servoData[5] = valueS6;
             if (_connectedDevice != null) {
-               if(_value6 == 0){
-                valueS6 = "a";
-              }
-              else if(_value6 == 36){
-                valueS6 = "b";
-              }
-              else if(_value6 == 72){
-                valueS6 = "c";
-              }
-              else if(_value6 == 108){
-                valueS6 = "d";
-              }
-              else if(_value6 == 144){
-                valueS6 = "e";
-              }
-              else if(_value6 == 180){
-                valueS6 = "f";
-              }
-              Bluetooth.plugin
-                  .write(_connectedDevice!.uuid, valueS6.codeUnits);
-              servoData[5] = valueS6;    
+              Bluetooth.plugin.write(_connectedDevice!.uuid, valueS6.codeUnits);
             }
           },
           max: 180,

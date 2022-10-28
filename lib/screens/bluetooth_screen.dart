@@ -5,7 +5,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rac/services/bluetooth.dart';
 import 'package:rac/utilities/constants.dart';
 
-
 class BluetoothScreen extends StatefulWidget {
   const BluetoothScreen({Key? key}) : super(key: key);
 
@@ -65,22 +64,22 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-              title: Text("BLUETOOTH", style: textStyleTitle),
-              centerTitle: true,
-              automaticallyImplyLeading: false,
-              flexibleSpace: Container(
-                alignment: Alignment.bottomLeft,
-                padding: const EdgeInsets.all(15),
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                      Color(0xFF3040a3),
-                      Color(0xFF5969c9),
-                    ])),
-              ),
-            ),
+          title: Text("BLUETOOTH", style: textStyleTitle),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          flexibleSpace: Container(
+            alignment: Alignment.bottomLeft,
+            padding: const EdgeInsets.all(15),
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                  Color(0xFF3040a3),
+                  Color(0xFF5969c9),
+                ])),
+          ),
+        ),
         body: Column(children: [
           TextButton(
               child: const Text('Mostrar dispositivos pareados'),
@@ -127,7 +126,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                 ? const Icon(Icons.bluetooth, color: Colors.orange)
                 : (device.isConnected
                     ? const Icon(Icons.bluetooth_connected, color: Colors.blue)
-                    : Icon(
+                    : const Icon(
                         Icons.bluetooth,
                         color: Colors.blue,
                       )),

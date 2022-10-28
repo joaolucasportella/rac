@@ -16,22 +16,34 @@ class Database {
     final ref = _database.ref();
     final snapshot = await ref.child(_user!).get();
     if (snapshot.exists) {
-            debugPrint(snapshot.child(i.toString()).value.toString());
+      debugPrint(snapshot.child(i.toString()).value.toString());
     } else {
       debugPrint("No data available.");
     }
   }
 
-  /*Future deletePreset(int i) async {
+  Future deletePreset(int i) async {
+    final ref = _database.ref(_user).child(i.toString());
+    await ref.set(null);
+    debugPrint("Preset Excluido!");
+  }
+
+  Future deleted(int count) async {
+    List<int> items = [];
     final ref = _database.ref();
     final snapshot = await ref.child(_user!).get();
     if (snapshot.exists) {
-      snapshot.child(i.toString()).ref.remove();
-      updatePresetIds();
+      for (int i = 0; i < count; i++) {
+        debugPrint(snapshot.child(i.toString()).value.toString());
+        if (snapshot.child(i.toString()).value == null) {
+          items.add(i.toInt());
+        }
+      }
     }
+    return items;
   }
 
-  Future updatePresetIds() async {
+  /*Future updatePresetIds() async {
     final ref = _database.ref();
     final snapshot = await ref.child(_user!).get();
     final count = await countPresets();

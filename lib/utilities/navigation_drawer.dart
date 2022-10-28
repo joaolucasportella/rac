@@ -3,7 +3,6 @@ import 'package:rac/main.dart';
 import 'package:rac/screens/bluetooth_screen.dart';
 import 'package:rac/screens/presets_screen.dart';
 import 'package:rac/services/authentication.dart';
-import 'package:rac/utilities/constants.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
@@ -14,10 +13,8 @@ class NavigationDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String name = 'Nome do Usuário';
-    const String email = 'email@usuario.com';
-    const String imagem =
-        'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg';
+    String _email = _auth.getCurrentUserEmail();
+    String _imagem = _auth.getCurrentUserIcons();
     return Drawer(
       child: Container(
         height: double.infinity,
@@ -33,7 +30,7 @@ class NavigationDrawerWidget extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             Padding(padding: padding),
-            buildHeader(imagem, name, email),
+            buildHeader(_imagem, _email),
             btn(context),
             const Divider(
               color: Color(0xFFffffff),
@@ -49,30 +46,24 @@ class NavigationDrawerWidget extends StatelessWidget {
     );
   }
 
-  Widget buildHeader(String imagem, String name, String email) {
+  Widget buildHeader(String imagem, String email) {
     return InkWell(
       child: Container(
-        padding: padding.add(const EdgeInsets.symmetric(vertical: 50)),
-        child: Row(
-          children: [
+        padding: padding.add(const EdgeInsets.symmetric(vertical: 20)),
+        child: Column(
+          children: <Widget>[
+            Padding(
+                padding: padding.add(const EdgeInsets.fromLTRB(0, 20, 0, 0))),
             CircleAvatar(radius: 45, backgroundImage: NetworkImage(imagem)),
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: labelStyleHeader,
-                ),
-                Text(
-                  email,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'OpenSans',
-                      fontSize: 11.5),
-                )
-              ],
-            )
+            Padding(
+                padding: padding.add(const EdgeInsets.fromLTRB(0, 15, 0, 0))),
+            Text(email,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                  fontSize: 16,
+                ))
           ],
         ),
       ),
@@ -81,7 +72,7 @@ class NavigationDrawerWidget extends StatelessWidget {
 
   Widget btn(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      //crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         SocialLoginButton(

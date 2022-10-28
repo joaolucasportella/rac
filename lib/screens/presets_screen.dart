@@ -15,11 +15,14 @@ class PresetScreenState extends State<PresetScreen> {
   int _countOfPresets = 0;
   bool _isVisible = false;
   Color cor = Colors.blue;
+  List<int> _deleted = [];
+  bool _isVisvible2 = true;
 
   PresetScreenState() {
     _database.countPresets().then((value) => setState(() {
           _countOfPresets = value;
         }));
+    //_deleted = _database.deleted(_countOfPresets);
   }
 
   @override
@@ -72,16 +75,17 @@ class PresetScreenState extends State<PresetScreen> {
         children: _buildGridTileList(_countOfPresets));
   }
 
-  List<Container> _buildGridTileList(int count) => List.generate(
-        count,
-        (i) => Container(
-            width: 181,
-            height: 181,
-            padding: const EdgeInsets.all(5),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: <Widget>[
-                GestureDetector(
+  List<Container> _buildGridTileList(int count) {
+    return List.generate(
+      count,
+      (i) => Container(
+          width: 181,
+          height: 181,
+          padding: const EdgeInsets.all(5),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: <Widget>[
+              GestureDetector(
                   onLongPress: () {
                     debugPrint("segurou");
                     setState(() {
@@ -93,39 +97,42 @@ class PresetScreenState extends State<PresetScreen> {
                       }
                     });
                   },
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      if(!_isVisible){
-                        //_database.getPresets(i);
-                        debugPrint(SlidersScreenState().servoData[i]);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color(0xFF5969c9),
-                        backgroundColor: Colors.white,
-                        minimumSize: const Size(181, 181),
-                        side: BorderSide(
-                          width: 5,
-                          color: cor,
-                        )),
-                    icon: const Icon(Icons.settings_outlined),
-                    label: Text("Preset | ${i + 1}", style: textStyleBlue),
-                  ),
-                ),
-                Visibility(
-                  visible: _isVisible,
-                  child: IconButton(
+                  child: Visibility(
+                    visible: _isVisvible2,
+                    child: ElevatedButton.icon(
                       onPressed: () {
-                        //_database.deletePreset(i);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const PresetScreen()));
+                        if (!_isVisible) {
+                          _database.getPresets(i);
+                        }
                       },
-                      icon: const Icon(Icons.delete),
-                      color: cor),
-                )
-              ],
-            )),
-      );
+                      style: ElevatedButton.styleFrom(
+                          foregroundColor: const Color(0xFF5969c9),
+                          backgroundColor: Colors.white,
+                          minimumSize: const Size(181, 181),
+                          side: BorderSide(
+                            width: 5,
+                            color: cor,
+                          )),
+                      icon: const Icon(Icons.settings_outlined),
+                      label: Text("Preset | ${i + 1}", style: textStyleBlue),
+                    ),
+                  )),
+              Visibility(
+                visible: _isVisible,
+                child: IconButton(
+                    onPressed: () {
+                      _database.deletePreset(i);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PresetScreen()));
+                      _isVisvible2 = false;
+                    },
+                    icon: const Icon(Icons.delete),
+                    color: cor),
+              )
+            ],
+          )),
+    );
+  }
 }

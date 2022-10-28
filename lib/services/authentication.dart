@@ -13,6 +13,22 @@ class Authentication {
     return auth.currentUser.toString();
   }
 
+  String getCurrentUserEmail() {
+    if (auth.currentUser?.email.toString() != null) {
+      return auth.currentUser!.email.toString();
+    } else {
+      return 'emaildousuario@gmail.com';
+    }
+  }
+
+  String getCurrentUserIcons() {
+    if (auth.currentUser?.photoURL.toString() != null) {
+      return auth.currentUser!.photoURL.toString();
+    } else {
+      return 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg';
+    }
+  }
+
   Future signUp(context, email, password) async {
     try {
       await auth.createUserWithEmailAndPassword(
